@@ -1,5 +1,5 @@
 export default class Ship {
-  constructor(type) {
+  constructor(type, startingPoint) {
     this.type = type;
     if (type === 'Carrier') {
       this.length = 5;
@@ -13,6 +13,7 @@ export default class Ship {
       this.length = 2;
     }
     this.hits = 0;
+    this.startingPoint = startingPoint;
   }
 
   hit = () => {
