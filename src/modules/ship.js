@@ -1,6 +1,8 @@
 export default class Ship {
-  constructor(type, startingPoint) {
+  constructor(type, position, startingPoint) {
     this.type = type;
+    this.position = position;
+    this.startingPoint = startingPoint;
     if (type === 'Carrier') {
       this.length = 5;
     } else if (type === 'Battleship') {
@@ -13,7 +15,6 @@ export default class Ship {
       this.length = 2;
     }
     this.hits = 0;
-    this.startingPoint = startingPoint;
   }
 
   hit = () => {
