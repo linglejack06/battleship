@@ -12,3 +12,6 @@ function startGame() {
   Doc.renderGame(board1.arr);
 }
 startGame();
+
+// eslint-disable-next-line no-alert
+alert('hi');

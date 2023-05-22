@@ -9,6 +9,9 @@
     "start": "webpack serve --open",
     "watch": "webpack --watch"
   },
+  "jest": {
+    "testEnvironment": "jsdom"
+  },
   "babel": {
     "presets": [
       [
@@ -39,7 +42,7 @@
     "eslint-plugin-react": "^7.32.2",
     "eslint-plugin-react-hooks": "^4.6.0",
     "style-loader": "^3.3.2",
-    "webpack": "^5.78.0",
+    "webpack": "^5.83.1",
     "webpack-cli": "^5.0.1",
     "webpack-dev-server": "^4.13.2"
   },
