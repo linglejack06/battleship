@@ -20,9 +20,13 @@ export default (function Doc() {
       box.appendChild(gameColumn);
     }
   }
-  function _renderStartForm(box, player) {
+  function _renderStartForm(box, player, nextShip) {
     const formContainer = document.createElement('div');
     formContainer.classList.add('game-text', 'form-container');
+    const instructions = document.createElement('h2');
+    instructions.classList.add('instructions', 'green');
+    instructions.textContent = `Place your ${nextShip}`;
+    formContainer.appendChild(instructions);
     const form = document.createElement('form');
     form.classList.add(player.name, 'coord-form');
     const coordInput = document.createElement('input');
@@ -42,8 +46,9 @@ export default (function Doc() {
     box.appendChild(formContainer);
     return form;
   }
-  function setupGame(board1, board2) {
-    const form = _renderStartForm(box1, board1.player);
+  function setupGame(board1, board2, nextShip) {
+    box1.innerHTML = '';
+    const form = _renderStartForm(box1, board1.player, nextShip);
     _populateBoard(box1, board1.arr);
     _populateBoard(box2, board2.arr);
     return form;
