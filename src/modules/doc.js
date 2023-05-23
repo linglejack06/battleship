@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 /* eslint-disable no-underscore-dangle */
 export default (function Doc() {
   const box1 = document.createElement('div');
@@ -19,9 +20,39 @@ export default (function Doc() {
       box.appendChild(gameColumn);
     }
   }
-  function renderGame(board1, board2) {
-    _populateBoard(box1, board1);
-    _populateBoard(box2, board2);
+  function _renderStartForm(box, player) {
+    const formContainer = document.createElement('div');
+    formContainer.classList.add('game-text', 'form-container');
+    const form = document.createElement('form');
+    form.classList.add(player.name, 'coord-form');
+    const coordInput = document.createElement('input');
+    coordInput.type = 'text';
+    coordInput.placeholder = 'num1, num2';
+    coordInput.id = 'coord';
+    const label = document.createElement('label');
+    label.htmlFor = 'coord';
+    label.textContent = 'Coordinates: ';
+    form.appendChild(label);
+    form.appendChild(coordInput);
+    const submitBtn = document.createElement('button');
+    submitBtn.classList.add('start-submit', 'submit-btn');
+    submitBtn.textContent = 'Place';
+    form.appendChild(submitBtn);
+    formContainer.appendChild(form);
+    box.appendChild(formContainer);
+    return form;
   }
-  return { renderGame };
+  function setupGame(board1, board2) {
+    const form = _renderStartForm(box1, board1.player);
+    _populateBoard(box1, board1.arr);
+    _populateBoard(box2, board2.arr);
+    return form;
+  }
+  function renderGame(board1, board2) {
+    box1.innerHTML = '';
+    box2.innerHTML = '';
+    _populateBoard(box1, board1.arr);
+    _populateBoard(box2, board2.arr);
+  }
+  return { setupGame, renderGame };
 }());
