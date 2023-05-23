@@ -20,12 +20,17 @@ export default (function Doc() {
       box.appendChild(gameColumn);
     }
   }
-  function _renderStartForm(box, player, nextShip) {
+  function _renderStartForm(box, player, nextShip, error) {
     const formContainer = document.createElement('div');
     formContainer.classList.add('game-text', 'form-container');
     const instructions = document.createElement('h2');
-    instructions.classList.add('instructions', 'green');
-    instructions.textContent = `Place your ${nextShip}`;
+    if (error) {
+      instructions.textContent = error;
+      instructions.classList.add('error');
+    } else {
+      instructions.classList.add('instructions');
+      instructions.textContent = `Place your ${nextShip}`;
+    }
     formContainer.appendChild(instructions);
     const form = document.createElement('form');
     form.classList.add(player.name, 'coord-form');
@@ -44,14 +49,14 @@ export default (function Doc() {
     form.appendChild(submitBtn);
     formContainer.appendChild(form);
     box.appendChild(formContainer);
-    return form;
+    return { form, instructions, coordInput };
   }
-  function setupGame(board1, board2, nextShip) {
+  function setupGame(board1, board2, nextShip, error) {
     box1.innerHTML = '';
-    const form = _renderStartForm(box1, board1.player, nextShip);
+    const formObj = _renderStartForm(box1, board1.player, nextShip, error);
     _populateBoard(box1, board1.arr);
     _populateBoard(box2, board2.arr);
-    return form;
+    return formObj;
   }
   function renderGame(board1, board2) {
     box1.innerHTML = '';
