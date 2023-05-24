@@ -39,7 +39,7 @@ function setPlayerBoard() {
     const ship = new Ship(battleships[battleships.length - 1], position, coords);
     if (board1.checkShipPosition(ship)) {
       board1.placeShip(ship);
-      Doc.populateBoard(board1.arr);
+      Doc.renderBoard(board1);
       battleships.pop();
       tags.coords.value = '';
       tags.instructions.textContent = `Place your ${battleships[battleships.length - 1]}`;

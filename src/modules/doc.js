@@ -2,11 +2,18 @@
 /* eslint-disable no-underscore-dangle */
 export default (function Doc() {
   const box1 = document.createElement('div');
-  box1.classList.add('game-board');
+  box1.classList.add('player-1');
+  const gameBoard1 = document.createElement('div');
+  gameBoard1.classList.add('game-board');
+  box1.appendChild(gameBoard1);
   document.body.appendChild(box1);
   const box2 = document.createElement('div');
-  box2.classList.add('game-board');
+  box2.classList.add('player-2');
+  const gameBoard2 = document.createElement('div');
+  gameBoard2.classList.add('game-board');
+  box2.appendChild(gameBoard2);
   document.body.appendChild(box2);
+
   function populateBoard(board, box = box1) {
     for (let i = 0; i < board.length; i += 1) {
       const col = board[i];
@@ -64,19 +71,27 @@ export default (function Doc() {
       form, instructions, coords, dropdown,
     };
   }
-  function setupGame(board1, board2, nextShip, error) {
+  function setupGame(board1, board2, nextShip) {
     box1.innerHTML = '';
     box2.innerHTML = '';
-    const formObj = _renderStartForm(box1, board1.player, nextShip, error);
-    populateBoard(board1.arr, box1);
-    populateBoard(board2.arr, box2);
+    const formObj = _renderStartForm(box1, board1.player, nextShip);
+    gameBoard1.innerHTML = '';
+    box1.appendChild(gameBoard1);
+    populateBoard(board1.arr, gameBoard1);
+    populateBoard(board2.arr, gameBoard2);
     return formObj;
   }
   function renderGame(board1, board2) {
     box1.innerHTML = '';
-    box2.innerHTML = '';
-    populateBoard(board1.arr, box1);
-    populateBoard(board2.arr, box2);
+    gameBoard1.innerHTML = '';
+    box1.appendChild(gameBoard1);
+    gameBoard2.innerHTML = '';
+    populateBoard(board1.arr, gameBoard1);
+    populateBoard(board2.arr, gameBoard2);
   }
-  return { setupGame, renderGame, populateBoard };
+  function renderBoard(board) {
+    gameBoard1.innerHTML = '';
+    populateBoard(board.arr, gameBoard1);
+  }
+  return { setupGame, renderGame, renderBoard };
 }());
