@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import Space from './space';
 
 export default class Board {
@@ -35,11 +36,16 @@ export default class Board {
   }
 
   checkShipPosition(ship) {
+    if (
+      (ship.startingPoint[0] + ship.length > 9)
+      || (ship.startingPoint[1] + ship.length > 9)) {
+      return false;
+    }
     for (let i = 0; i < ship.length; i += 1) {
       if (ship.position === 'horizontal') {
         if (this.arr[ship.startingPoint[0]][ship.startingPoint[1] + i].type !== 'Empty') return false;
       } else if (ship.position === 'vertical') {
-        if (this.arr[ship.startingPoint[0] + i][ship.startingPoint[1]].type !== 'Empty') return false;
+        if (this.arr[ship.startingPoint[0] + i][ship.startingPoint[ship.startingPoint.length - 1]].type !== 'Empty') return false;
       }
     }
     return true;
