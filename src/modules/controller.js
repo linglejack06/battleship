@@ -35,12 +35,14 @@ function setPlayerBoard() {
   tags.form.addEventListener('submit', (e) => {
     e.preventDefault();
     const coords = tags.coords.value.split(', ').map((coord) => parseInt(coord, 10));
-    const ship = new Ship(battleships[battleships.length - 1], 'horizontal', coords);
+    const position = tags.dropdown.value;
+    const ship = new Ship(battleships[battleships.length - 1], position, coords);
     if (board1.checkShipPosition(ship)) {
       board1.placeShip(ship);
-      Doc.populateBoard(board1);
+      Doc.populateBoard(board1.arr);
       battleships.pop();
       tags.coords.value = '';
+      tags.instructions.textContent = `Place your ${battleships[battleships.length - 1]}`;
       count += 1;
     } else {
       tags.coords.value = '';

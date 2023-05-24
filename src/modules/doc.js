@@ -20,14 +20,14 @@ export default (function Doc() {
       box.appendChild(gameColumn);
     }
   }
-  function _addInput(form, ship) {
+  function _addInput(form) {
     const coordInput = document.createElement('input');
     coordInput.type = 'text';
     coordInput.placeholder = 'num1, num2';
-    coordInput.id = `${ship}`;
+    coordInput.id = 'coords';
     const label = document.createElement('label');
-    label.htmlFor = `${ship}`;
-    label.textContent = `${ship} Coordinates: `;
+    label.htmlFor = 'coords';
+    label.textContent = 'Coordinates: ';
     form.appendChild(label);
     form.appendChild(coordInput);
     return coordInput;
@@ -41,7 +41,19 @@ export default (function Doc() {
     formContainer.appendChild(instructions);
     const form = document.createElement('form');
     form.classList.add(player.name, 'coord-form');
-    const coords = _addInput(form, nextShip);
+    const coords = _addInput(form);
+    const dropdown = document.createElement('select');
+    dropdown.name = 'position';
+    dropdown.setAttribute('id', 'position');
+    const horizontal = document.createElement('option');
+    horizontal.value = 'horizontal';
+    horizontal.textContent = 'Horizontal';
+    dropdown.appendChild(horizontal);
+    const vertical = document.createElement('option');
+    vertical.value = 'vertical';
+    vertical.textContent = 'Vertical';
+    dropdown.appendChild(vertical);
+    form.appendChild(dropdown);
     const submitBtn = document.createElement('button');
     submitBtn.classList.add('start-submit', 'submit-btn');
     submitBtn.textContent = 'Place';
@@ -49,7 +61,7 @@ export default (function Doc() {
     formContainer.appendChild(form);
     box.appendChild(formContainer);
     return {
-      form, instructions, coords,
+      form, instructions, coords, dropdown,
     };
   }
   function setupGame(board1, board2, nextShip, error) {
