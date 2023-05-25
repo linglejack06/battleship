@@ -34,7 +34,7 @@ export default (function Doc() {
     coordInput.id = 'coords';
     const label = document.createElement('label');
     label.htmlFor = 'coords';
-    label.textContent = 'Coordinates: ';
+    label.textContent = 'Hit Coordinates: ';
     form.appendChild(label);
     form.appendChild(coordInput);
     return coordInput;
@@ -81,13 +81,44 @@ export default (function Doc() {
     populateBoard(board2.arr, gameBoard2);
     return formObj;
   }
+  function renderHitForm() {
+    const formContainer = document.createElement('div');
+    formContainer.classList.add('hit-form-container');
+    const instructions = document.createElement('h2');
+    instructions.classList.add('hit-instructions');
+    instructions.textContent = 'Bomb their ship';
+    formContainer.appendChild(instructions);
+    const form = document.createElement('form');
+    form.classList.add('hit-form');
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.placeholder = 'num1, num2';
+    input.id = 'hit-form';
+    const label = document.createElement('label');
+    label.classList.add('hit-label');
+    label.htmlFor = 'hit-form';
+    form.appendChild(label);
+    form.appendChild(input);
+    const submit = document.createElement('button');
+    submit.classList.add('place-hit-button');
+    submit.textContent = 'Bomb Enemy';
+    form.appendChild(submit);
+    formContainer.appendChild(form);
+    box1.appendChild(formContainer);
+    return {
+      instructions, input, submit, form,
+    };
+  }
   function renderGame(board1, board2) {
     box1.innerHTML = '';
     gameBoard1.innerHTML = '';
+    const tags = renderHitForm();
     box1.appendChild(gameBoard1);
     gameBoard2.innerHTML = '';
+    box2.appendChild(gameBoard2);
     populateBoard(board1.arr, gameBoard1);
     populateBoard(board2.arr, gameBoard2);
+    return tags;
   }
   function renderBoard(board) {
     gameBoard1.innerHTML = '';

@@ -6,6 +6,7 @@ import Doc from './doc';
 
 let battleships = ['Destroyer', 'Submarine', 'Cruiser', 'Battleship', 'Carrier'];
 const human = new Player('Jack');
+const computer = new Player('Computer', true);
 const board1 = new Board(human, []);
 const board2 = new Board(null, []);
 
@@ -29,6 +30,28 @@ function setComputerBoard() {
     battleships.pop();
   }
 }
+function beginGame() {
+  const tags = Doc.renderGame(board1, board2);
+  const instructions = document.querySelector('.hit-instructions');
+  const form = document.querySelector('.hit-form');
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    let result;
+    if (human.isTurn) {
+      result = board2.takeHit([1, 1]);
+    } else {
+      result = board1.takeHit(computer.generateHit());
+      while (result === 'retry') {
+        result = board1.takeHit(computer.generateHit());
+      }
+    }
+    instructions.textContent = result;
+    tags.input.value = '';
+    if (board1.checkWin() || board2.checkWin()) {
+      tags.instructions = 'winner';
+    }
+  });
+}
 function setPlayerBoard() {
   const tags = Doc.setupGame(board1, board2, battleships[battleships.length - 1]);
   let count = 0;
@@ -48,12 +71,14 @@ function setPlayerBoard() {
       tags.coords.value = '';
       tags.instructions.textContent = `Error: ${ship.type} must have atleast ${ship.length} consecutive spaces and not be placed on another ship.`;
     }
-    if (count === 5) {
+    if (count >= 5) {
       setComputerBoard();
       Doc.renderGame(board1, board2);
+      tags.form.remove();
+      beginGame();
     }
   });
 }
-export default function startGame() {
+export default async function startGame() {
   setPlayerBoard();
 }
