@@ -33,22 +33,23 @@ function setComputerBoard() {
 function beginGame() {
   const tags = Doc.renderGame(board1, board2);
   const instructions = document.querySelector('.hit-instructions');
+  const input = document.getElementById('hit-coord');
   const form = document.querySelector('.hit-form');
   form.addEventListener('submit', (e) => {
     e.preventDefault();
-    let result;
-    if (human.isTurn) {
-      result = board2.takeHit([1, 1]);
-    } else {
-      result = board1.takeHit(computer.generateHit());
-      while (result === 'retry') {
-        result = board1.takeHit(computer.generateHit());
-      }
+    const coords = input.value.split(', ').map((val) => parseInt(val, 10));
+    const humanResult = board2.takeHit(coords);
+    let comResult = board1.takeHit(computer.generateHit());
+    while (comResult === 'retry') {
+      comResult = board1.takeHit(computer.generateHit());
     }
-    instructions.textContent = result;
+    instructions.textContent = humanResult;
     tags.input.value = '';
     if (board1.checkWin() || board2.checkWin()) {
       tags.instructions = 'winner';
+      form.remove();
+      const player = board1.checkWin() ? board1.player : board2.player;
+      Doc.displayWin(player);
     }
   });
 }

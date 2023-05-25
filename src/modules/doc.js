@@ -93,10 +93,10 @@ export default (function Doc() {
     const input = document.createElement('input');
     input.type = 'text';
     input.placeholder = 'num1, num2';
-    input.id = 'hit-form';
+    input.id = 'hit-coord';
     const label = document.createElement('label');
     label.classList.add('hit-label');
-    label.htmlFor = 'hit-form';
+    label.htmlFor = 'hit-coord';
     form.appendChild(label);
     form.appendChild(input);
     const submit = document.createElement('button');
@@ -120,9 +120,18 @@ export default (function Doc() {
     populateBoard(board2.arr, gameBoard2);
     return tags;
   }
+  function displayWin(player) {
+    document.body.innerHTML = '';
+    const winMessage = document.createElement('h1');
+    winMessage.classList.add('win-message');
+    winMessage.textContent = `Congrats ${player.name}! You win`;
+    document.body.appendChild(winMessage);
+  }
   function renderBoard(board) {
     gameBoard1.innerHTML = '';
     populateBoard(board.arr, gameBoard1);
   }
-  return { setupGame, renderGame, renderBoard };
+  return {
+    setupGame, renderGame, renderBoard, displayWin,
+  };
 }());
