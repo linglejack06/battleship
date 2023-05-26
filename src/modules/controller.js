@@ -39,17 +39,20 @@ function beginGame() {
     e.preventDefault();
     const coords = input.value.split(', ').map((val) => parseInt(val, 10));
     const humanResult = board2.takeHit(coords);
+    instructions.textContent = humanResult;
+    tags.input.value = '';
     let comResult = board1.takeHit(computer.generateHit());
     while (comResult === 'retry') {
       comResult = board1.takeHit(computer.generateHit());
     }
-    instructions.textContent = humanResult;
-    tags.input.value = '';
     if (board1.checkWin() || board2.checkWin()) {
       tags.instructions = 'winner';
       form.remove();
       const player = board1.checkWin() ? board1.player : board2.player;
       Doc.displayWin(player);
+    } else {
+      Doc.renderBoard(board1, 1, true);
+      Doc.renderBoard(board2, 2);
     }
   });
 }
@@ -63,7 +66,7 @@ function setPlayerBoard() {
     const ship = new Ship(battleships[battleships.length - 1], position, coords);
     if (board1.checkShipPosition(ship)) {
       board1.placeShip(ship);
-      Doc.renderBoard(board1);
+      Doc.renderBoard(board1, 1, true);
       battleships.pop();
       tags.coords.value = '';
       tags.instructions.textContent = `Place your ${battleships[battleships.length - 1]}`;

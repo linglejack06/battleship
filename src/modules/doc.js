@@ -14,14 +14,24 @@ export default (function Doc() {
   box2.appendChild(gameBoard2);
   document.body.appendChild(box2);
 
-  function populateBoard(board, box = box1) {
+  function populateBoard(board, human = false, box = box1) {
     for (let i = 0; i < board.length; i += 1) {
       const col = board[i];
       const gameColumn = document.createElement('div');
       gameColumn.classList.add('game-column');
       for (let j = 0; j < col.length; j += 1) {
         const gameSpace = document.createElement('div');
-        gameSpace.classList.add('game-space', col[j].type);
+        gameSpace.classList.add('game-space');
+        if (col[j].isHit) {
+          gameSpace.classList.remove('ship');
+          gameSpace.classList.add('hit');
+        }
+        if (col[j].isTried && !col[j].isHit) {
+          gameSpace.classList.add('miss');
+        }
+        if (col[j].type !== 'Empty' && human) {
+          gameSpace.classList.add('ship');
+        }
         gameColumn.appendChild(gameSpace);
       }
       box.appendChild(gameColumn);
@@ -77,8 +87,8 @@ export default (function Doc() {
     const formObj = _renderStartForm(box1, board1.player, nextShip);
     gameBoard1.innerHTML = '';
     box1.appendChild(gameBoard1);
-    populateBoard(board1.arr, gameBoard1);
-    populateBoard(board2.arr, gameBoard2);
+    populateBoard(board1.arr, true, gameBoard1);
+    populateBoard(board2.arr, false, gameBoard2);
     return formObj;
   }
   function renderHitForm() {
@@ -116,8 +126,8 @@ export default (function Doc() {
     box1.appendChild(gameBoard1);
     gameBoard2.innerHTML = '';
     box2.appendChild(gameBoard2);
-    populateBoard(board1.arr, gameBoard1);
-    populateBoard(board2.arr, gameBoard2);
+    populateBoard(board1.arr, true, gameBoard1);
+    populateBoard(board2.arr, false, gameBoard2);
     return tags;
   }
   function displayWin(player) {
@@ -127,9 +137,14 @@ export default (function Doc() {
     winMessage.textContent = `Congrats ${player.name}! You win`;
     document.body.appendChild(winMessage);
   }
-  function renderBoard(board) {
-    gameBoard1.innerHTML = '';
-    populateBoard(board.arr, gameBoard1);
+  function renderBoard(board, num, player = false) {
+    if (num === 1) {
+      gameBoard1.innerHTML = '';
+      populateBoard(board.arr, player, gameBoard1);
+    } else {
+      gameBoard2.innerHTML = '';
+      populateBoard(board.arr, false, gameBoard2);
+    }
   }
   return {
     setupGame, renderGame, renderBoard, displayWin,
