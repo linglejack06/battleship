@@ -17,8 +17,8 @@ export default (function Doc() {
   function populateBoard(board, human = false, box = box1) {
     for (let i = 0; i < board.length; i += 1) {
       const col = board[i];
-      const gameColumn = document.createElement('div');
-      gameColumn.classList.add('game-column');
+      const gameRow = document.createElement('div');
+      gameRow.classList.add('game-row');
       for (let j = 0; j < col.length; j += 1) {
         const gameSpace = document.createElement('div');
         gameSpace.classList.add('game-space');
@@ -32,9 +32,9 @@ export default (function Doc() {
         if (col[j].type !== 'Empty' && human) {
           gameSpace.classList.add('ship');
         }
-        gameColumn.appendChild(gameSpace);
+        gameRow.appendChild(gameSpace);
       }
-      box.appendChild(gameColumn);
+      box.appendChild(gameRow);
     }
   }
   function _addInput(form) {
